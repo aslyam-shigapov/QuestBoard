@@ -32,7 +32,7 @@ class UserAchievement(models.Model):
     )
     achievement = models.ForeignKey(
         Achievement,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,  # было CASCADE — теперь PROTECT
         related_name='owners',
         verbose_name='Ачивка',
     )

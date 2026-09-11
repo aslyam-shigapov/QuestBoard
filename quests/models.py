@@ -45,7 +45,7 @@ class QuestCompletion(models.Model):
     """
     quest = models.ForeignKey(
         Quest,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,  # было CASCADE — теперь PROTECT
         related_name='completions',
         verbose_name='Квест',
     )

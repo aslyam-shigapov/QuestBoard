@@ -18,6 +18,11 @@ media/
 .env
 .env.local
 
+# Данные Docker
+pg_data/
+postgres_data/
+docker-volumes/
+
 # ОС-мусор
 .DS_Store
 Thumbs.db
