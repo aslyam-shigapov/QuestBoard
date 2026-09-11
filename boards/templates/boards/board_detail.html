@@ -15,6 +15,19 @@
     <p>{{ board.description }}</p>
     <p style="color: #888;">Автор: {{ board.owner.username }} · {{ board.created_at|date:"d.m.Y" }}</p>
 
+    {# Кнопка «В избранное» — доступна всем, включая анонимов #}
+    <div style="margin: 15px 0;">
+        {% if board.id in request.session.favorites %}
+            <a href="{% url 'boards:add_to_favorites' board.id %}" class="btn" style="background: #713f12;">
+                ⭐ В избранном (убрать)
+            </a>
+        {% else %}
+            <a href="{% url 'boards:add_to_favorites' board.id %}" class="btn" style="background: #4c1d95;">
+                ☆ В избранное
+            </a>
+        {% endif %}
+    </div>
+
     {% if user == board.owner %}
         <div style="margin: 15px 0;">
             <a href="{% url 'boards:board_edit' board.id %}" class="btn">✏️ Редактировать</a>

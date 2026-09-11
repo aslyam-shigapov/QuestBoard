@@ -71,3 +71,31 @@ def board_delete(request, board_id):
         board.delete()
         return redirect('boards:board_list')
     return render(request, 'boards/board_confirm_delete.html', {'board': board})
+
+
+def add_to_favorites(request, board_id):
+    """
+    Добавляет/убирает доску из избранного в сессии.
+    Работает для анонимных и авторизованных пользователей.
+    """
+    board = get_object_or_404(Board, id=board_id)
+    favorites = request.session.get('favorites', [])
+
+    if board.id in favorites:
+        favorites.remove(board.id)  # убираем
+    else:
+        favorites.append(board.id)  # добавляем
+
+    request.session['favorites'] = favorites
+    request.session.modified = True
+    return redirect('boards:board_detail', board_id=board.id)
+
+
+def favorites_list(request):
+    """
+    Показывает список избранных досок из сессии.
+    """
+    favorites_ids = request.session.get('favorites', [])
+    boards = Board.objects.filter(id__in=favorites_ids)
+    context = {'boards': boards}
+    return render(request, 'boards/favorites.html', context)
