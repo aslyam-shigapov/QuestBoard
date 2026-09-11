@@ -3,26 +3,24 @@
 {% block title %}Доски — QuestBoard{% endblock %}
 
 {% block content %}
-    <h1>🗂️ Публичные доски</h1>
-    <p style="margin-bottom: 30px; color: #888;">
-        Пока это фейковые данные — скоро подключим БД.
-    </p>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>🗂️ Публичные доски</h1>
+        {% if user.is_authenticated %}
+            <a href="{% url 'boards:board_create' %}" class="btn">+ Создать доску</a>
+        {% endif %}
+    </div>
 
     {% for board in boards %}
         <div class="board-card">
-            <h3>{{ board.title }}</h3>
+            <h3>
+                <a href="{% url 'boards:board_detail' board.id %}"
+                   style="color: #a78bfa; text-decoration: none;">
+                    {{ board.title }}
+                </a>
+            </h3>
             <p>{{ board.description }}</p>
-
-            {% if board.difficulty == 'hard' %}
-                <span class="badge badge-hard">🔥 Хардкор</span>
-            {% elif board.difficulty == 'medium' %}
-                <span class="badge badge-medium">⚡ Средний</span>
-            {% else %}
-                <span class="badge badge-easy">🌱 Лёгкий</span>
-            {% endif %}
-
             <div class="meta">
-                Автор: {{ board.author }} · Квестов: {{ board.quests_count }}
+                Автор: {{ board.owner.username }} · Квестов: {{ board.quests.count }} · {{ board.created_at|date:"d.m.Y" }}
             </div>
         </div>
     {% empty %}

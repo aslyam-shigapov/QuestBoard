@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.title }} — QuestBoard{% endblock %}
+
+{% block content %}
+    <a href="{% url 'boards:board_list' %}" style="color: #888;">← К списку досок</a>
+
+    <h1 style="margin-top: 15px;">{{ board.title }}</h1>
+    <p>{{ board.description }}</p>
+    <p style="color: #888;">Автор: {{ board.owner.username }} · {{ board.created_at|date:"d.m.Y" }}</p>
+
+    {% if user == board.owner %}
+        <div style="margin: 15px 0;">
+            <a href="{% url 'boards:board_edit' board.id %}" class="btn">✏️ Редактировать</a>
+            <a href="{% url 'boards:board_delete' board.id %}" class="btn" style="background: #7f1d1d;">🗑️ Удалить</a>
+            <a href="{% url 'quests:quest_create' board.id %}" class="btn">+ Добавить квест</a>
+        </div>
+    {% endif %}
+
+    <h2 style="margin-top: 30px;">Квесты ({{ quests.count }})</h2>
+
+    {% for quest in quests %}
+        <div class="board-card">
+            <h3>{{ quest.title }}</h3>
+            <p>{{ quest.description }}</p>
+            <div style="margin-top: 10px;">
+                {% if quest.difficulty == 'hard' %}
+                    <span class="badge badge-hard">🔥 Хардкор</span>
+                {% elif quest.difficulty == 'medium' %}
+                    <span class="badge badge-medium">⚡ Средний</span>
+                {% else %}
+                    <span class="badge badge-easy">🌱 Лёгкий</span>
+                {% endif %}
+                <span style="margin-left: 10px; color: #fde047;">+{{ quest.xp_reward }} XP</span>
+            </div>
+            <div style="margin-top: 15px;">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'quests:quest_complete' quest.id %}" class="btn" style="background: #14532d;">
+                        ✓ Выполнить
+                    </a>
+                {% endif %}
+                {% if user == board.owner %}
+                    <a href="{% url 'quests:quest_delete' quest.id %}"
+                       style="color: #d1005a; margin-left: 15px; text-decoration: none;">
+                        🗑️ Удалить
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p>Квестов пока нет.</p>
+    {% endfor %}
+{% endblock %}
