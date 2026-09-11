@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}QuestBoard{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'boards:home' %}" class="logo">⚔️ QuestBoard</a>
+            <nav class="nav-links">
+                <a href="{% url 'boards:home' %}" class="nav-link">Главная</a>
+                <a href="{% url 'boards:board_list' %}" class="nav-link">Доски</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 QuestBoard — геймификация привычек</p>
+    </footer>
+</body>
+</html>

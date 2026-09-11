@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Доски — QuestBoard{% endblock %}
+
+{% block content %}
+    <h1>🗂️ Публичные доски</h1>
+    <p style="margin-bottom: 30px; color: #888;">
+        Пока это фейковые данные — скоро подключим БД.
+    </p>
+
+    {% for board in boards %}
+        <div class="board-card">
+            <h3>{{ board.title }}</h3>
+            <p>{{ board.description }}</p>
+
+            {% if board.difficulty == 'hard' %}
+                <span class="badge badge-hard">🔥 Хардкор</span>
+            {% elif board.difficulty == 'medium' %}
+                <span class="badge badge-medium">⚡ Средний</span>
+            {% else %}
+                <span class="badge badge-easy">🌱 Лёгкий</span>
+            {% endif %}
+
+            <div class="meta">
+                Автор: {{ board.author }} · Квестов: {{ board.quests_count }}
+            </div>
+        </div>
+    {% empty %}
+        <p>Досок пока нет. Самое время создать первую!</p>
+    {% endfor %}
+{% endblock %}
