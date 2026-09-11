@@ -12,6 +12,10 @@
 
     {% for board in boards %}
         <div class="board-card">
+            {% if board.cover %}
+                <img src="{{ board.cover.url }}" alt="{{ board.title }}"
+                     style="max-width: 100%; max-height: 180px; border-radius: 8px; margin-bottom: 10px;">
+            {% endif %}
             <h3>
                 <a href="{% url 'boards:board_detail' board.id %}"
                    style="color: #a78bfa; text-decoration: none;">

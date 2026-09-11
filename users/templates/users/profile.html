@@ -6,12 +6,12 @@
     <h1>Профиль {{ user.username }}</h1>
 
     <div class="board-card" style="max-width: 500px;">
-        <p><strong>Уровень:</strong> {{ profile.level }}</p>
-        <p><strong>Опыт (XP):</strong> {{ profile.xp }}</p>
         {% if profile.avatar %}
             <img src="{{ profile.avatar.url }}" alt="avatar"
                  style="max-width: 120px; border-radius: 50%; margin: 10px 0;">
         {% endif %}
+        <p><strong>Уровень:</strong> {{ profile.level }}</p>
+        <p><strong>Опыт (XP):</strong> {{ profile.xp }}</p>
         <p><strong>О себе:</strong> {{ profile.bio|default:"—" }}</p>
     </div>
 

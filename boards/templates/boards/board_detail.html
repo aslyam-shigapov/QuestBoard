@@ -6,6 +6,12 @@
     <a href="{% url 'boards:board_list' %}" style="color: #888;">← К списку досок</a>
 
     <h1 style="margin-top: 15px;">{{ board.title }}</h1>
+
+    {% if board.cover %}
+        <img src="{{ board.cover.url }}" alt="{{ board.title }}"
+             style="max-width: 400px; border-radius: 10px; margin: 15px 0; display: block;">
+    {% endif %}
+
     <p>{{ board.description }}</p>
     <p style="color: #888;">Автор: {{ board.owner.username }} · {{ board.created_at|date:"d.m.Y" }}</p>
 
