@@ -1,0 +1,33 @@
+# Виртуальное окружение
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Локальная БД (в контейнере будет Postgres)
+db.sqlite3
+
+# Медиа и статика (соберём внутри)
+media/
+staticfiles/
+
+# Секреты (не должны попадать в образ!)
+.env
+
+# Git и IDE
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Тесты и кэш
+.pytest_cache/
+tests/
+
+# Docker-файлы (чтобы не рекурсировало)
+Dockerfile
+docker-compose.yml
