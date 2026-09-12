@@ -36,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',                      # ВАЖНО: в самом верху, до admin
     # наши приложения
     'users.apps.UsersConfig',
     'boards.apps.BoardsConfig',
@@ -64,6 +65,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.yandex',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+
+    # WebSockets
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -95,6 +99,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'questboard.wsgi.application'
+ASGI_APPLICATION = 'questboard.asgi.application'
 
 
 # Database
@@ -224,7 +229,7 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-# Скоупы для провайдеров (иначе GitHub вернёт 404)
+# Скоупы для провайдеров
 SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'SCOPE': [
@@ -237,5 +242,19 @@ SOCIALACCOUNT_PROVIDERS = {
             'login:email',
             'login:info',
         ],
+    },
+}
+
+
+# ============================================
+# Django Channels (WebSockets)
+# ============================================
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)],
+        },
     },
 }

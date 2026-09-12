@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Чат доски «{{ board.title }}» — QuestBoard{% endblock %}
+
+{% block content %}
+    <a href="{% url 'boards:board_detail' board.id %}" style="color: #888;">← К доске</a>
+
+    <h1 style="margin-top: 15px;">💬 Чат доски «{{ board.title }}»</h1>
+    <p style="color: #888;">Комната: <code>board_{{ board.id }}</code></p>
+
+    <div style="max-width: 700px; margin-top: 20px;">
+        <div id="chat-log"
+             style="height: 400px; border: 1px solid #2d2d44; border-radius: 8px;
+                    padding: 15px; overflow-y: scroll; margin-bottom: 15px;
+                    background: #1a1a2e; color: #e0e0e0;">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <input id="chat-message-input" type="text" placeholder="Введите сообщение..."
+                   style="flex-grow: 1; padding: 10px; border: 1px solid #2d2d44;
+                          border-radius: 6px; background: #1a1a2e; color: #e0e0e0;">
+            <button id="chat-message-submit" class="btn" style="margin-top: 0;">
+                Отправить
+            </button>
+        </div>
+
+        <p id="chat-status" style="margin-top: 10px; color: #888; font-size: 14px;">
+            Подключение к чату...
+        </p>
+    </div>
+
+    <script>
+        const boardId = {{ board.id }};
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + boardId + '/'
+        );
+
+        const chatLog = document.querySelector('#chat-log');
+        const chatStatus = document.querySelector('#chat-status');
+
+        chatSocket.onopen = function(e) {
+            chatStatus.textContent = '✅ Подключено';
+            chatStatus.style.color = '#86efac';
+        };
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const messageElement = document.createElement('div');
+            messageElement.style.marginBottom = '8px';
+
+            if (data.sender) {
+                messageElement.innerHTML = '<strong style="color: #a78bfa;">'
+                    + data.sender + ':</strong> ' + data.message;
+            } else {
+                messageElement.style.color = '#888';
+                messageElement.style.fontStyle = 'italic';
+                messageElement.textContent = data.message;
+            }
+
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+
+        chatSocket.onclose = function(e) {
+            chatStatus.textContent = '❌ Соединение закрыто';
+            chatStatus.style.color = '#fca5a5';
+        };
+
+        chatSocket.onerror = function(e) {
+            chatStatus.textContent = '⚠️ Ошибка соединения';
+            chatStatus.style.color = '#fca5a5';
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const input = document.querySelector('#chat-message-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            chatSocket.send(JSON.stringify({'message': message}));
+            input.value = '';
+        };
+
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-input').focus();
+    </script>
+{% endblock %}

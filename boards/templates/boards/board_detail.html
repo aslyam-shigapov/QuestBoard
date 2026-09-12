@@ -28,6 +28,13 @@
         {% endif %}
     </div>
 
+    {# Кнопка чата — доступна всем #}
+    <div style="margin: 15px 0;">
+        <a href="{% url 'boards:board_chat' board.id %}" class="btn" style="background: #1e40af;">
+            💬 Открыть чат
+        </a>
+    </div>
+
     {% if user == board.owner %}
         <div style="margin: 15px 0;">
             <a href="{% url 'boards:board_edit' board.id %}" class="btn">✏️ Редактировать</a>

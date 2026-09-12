@@ -113,3 +113,12 @@ def toggle_theme(request):
     response = redirect(referer)
     response.set_cookie('theme', new_theme, max_age=60 * 60 * 24 * 30)  # 30 дней
     return response
+
+
+def board_chat(request, board_id):
+    """
+    Страница чата конкретной доски.
+    """
+    board = get_object_or_404(Board, id=board_id)
+    context = {'board': board}
+    return render(request, 'boards/chat.html', context)
