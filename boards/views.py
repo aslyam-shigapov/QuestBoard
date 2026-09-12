@@ -99,3 +99,17 @@ def favorites_list(request):
     boards = Board.objects.filter(id__in=favorites_ids)
     context = {'boards': boards}
     return render(request, 'boards/favorites.html', context)
+
+
+def toggle_theme(request):
+    """
+    Переключает тему (light/dark) в куке. Живёт 30 дней.
+    """
+    current = request.COOKIES.get('theme', 'dark')
+    new_theme = 'light' if current == 'dark' else 'dark'
+
+    # Возвращаемся на ту же страницу
+    referer = request.META.get('HTTP_REFERER', '/')
+    response = redirect(referer)
+    response.set_cookie('theme', new_theme, max_age=60 * 60 * 24 * 30)  # 30 дней
+    return response

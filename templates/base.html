@@ -7,7 +7,7 @@
     <title>{% block title %}QuestBoard{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body>
+<body class="{% if request.COOKIES.theme == 'light' %}light-theme{% else %}dark-theme{% endif %}">
     <header class="navbar">
         <div class="nav-container">
             <a href="{% url 'boards:home' %}" class="logo">⚔️ QuestBoard</a>
@@ -15,6 +15,10 @@
                 <a href="{% url 'boards:home' %}" class="nav-link">Главная</a>
                 <a href="{% url 'boards:board_list' %}" class="nav-link">Доски</a>
                 <a href="{% url 'boards:favorites_list' %}" class="nav-link">⭐ Избранное</a>
+
+                <a href="{% url 'boards:toggle_theme' %}" class="nav-link">
+                    {% if request.COOKIES.theme == 'light' %}🌙{% else %}☀️{% endif %}
+                </a>
 
                 {% if user.is_authenticated %}
                     <a href="{% url 'users:profile' %}" class="nav-link">
