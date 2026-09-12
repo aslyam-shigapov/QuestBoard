@@ -7,6 +7,13 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    # allauth (соцлогин: GitHub, Яндекс)
+    path('accounts/', include('allauth.urls')),
+
+    # dj-rest-auth (REST для логина/регистрации)
+    path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
+
     # Веб-страницы
     path('users/', include('users.urls', namespace='users')),
     path('', include('boards.urls', namespace='boards')),
