@@ -5,35 +5,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}QuestBoard{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body class="{% if request.COOKIES.theme == 'light' %}light-theme{% else %}dark-theme{% endif %}">
+    <!-- Анимированный фон с градиентами -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <header class="navbar">
         <div class="nav-container">
-            <a href="{% url 'boards:home' %}" class="logo">⚔️ QuestBoard</a>
+            <a href="{% url 'boards:home' %}" class="logo">
+                <span class="logo-icon">⚔️</span>
+                <span class="logo-text">QuestBoard</span>
+            </a>
+
             <nav class="nav-links">
                 <a href="{% url 'boards:home' %}" class="nav-link">Главная</a>
                 <a href="{% url 'boards:board_list' %}" class="nav-link">Доски</a>
-                <a href="{% url 'boards:favorites_list' %}" class="nav-link">⭐ Избранное</a>
+                <a href="{% url 'boards:favorites_list' %}" class="nav-link">
+                    <span class="nav-icon">⭐</span> Избранное
+                </a>
 
-                <a href="{% url 'boards:toggle_theme' %}" class="nav-link">
+                <a href="{% url 'boards:toggle_theme' %}" class="nav-link theme-toggle" title="Переключить тему">
                     {% if request.COOKIES.theme == 'light' %}🌙{% else %}☀️{% endif %}
                 </a>
 
                 {% if user.is_authenticated %}
-                    <a href="{% url 'users:profile' %}" class="nav-link">
-                        Привет, {{ user.username }}
+                    <a href="{% url 'users:profile' %}" class="nav-link nav-profile">
+                        <span class="nav-avatar">{{ user.username|first|upper }}</span>
+                        <span>{{ user.username }}</span>
                     </a>
-                    <form action="{% url 'users:logout' %}" method="post" style="display: inline;">
+                    <form action="{% url 'users:logout' %}" method="post" class="logout-form">
                         {% csrf_token %}
-                        <button type="submit" class="nav-link"
-                                style="background: none; border: 1px solid #a78bfa; color: #a78bfa; cursor: pointer;">
-                            Выйти
-                        </button>
+                        <button type="submit" class="btn-logout">Выйти</button>
                     </form>
                 {% else %}
                     <a href="{% url 'users:login' %}" class="nav-link">Войти</a>
-                    <a href="{% url 'users:register' %}" class="nav-link">Регистрация</a>
+                    <a href="{% url 'users:register' %}" class="btn-nav-primary">Регистрация</a>
                 {% endif %}
             </nav>
         </div>
@@ -45,7 +62,9 @@
     </main>
 
     <footer class="footer">
-        <p>© 2026 QuestBoard — геймификация привычек</p>
+        <div class="footer-content">
+            <p>© 2026 <strong>QuestBoard</strong> — геймификация привычек</p>
+        </div>
     </footer>
 </body>
 </html>

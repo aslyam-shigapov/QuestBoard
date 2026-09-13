@@ -13,31 +13,27 @@
     </form>
 
     <p style="margin-top: 15px; font-size: 14px;">
-        <a href="{% url 'users:password_reset' %}" style="color: #a78bfa;">Забыли пароль?</a>
+        <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
     </p>
 
-    <hr style="margin: 25px 0; border-color: #2d2d44; max-width: 400px;">
-
-    <p style="margin-bottom: 15px; color: #888;">Или войдите через:</p>
+    <div class="auth-divider">
+        <span>или войдите через</span>
+    </div>
 
     <div style="max-width: 400px;">
-        <a href="{% provider_login_url 'yandex' %}"
-           style="display: block; text-align: center; background: #fc3f1d; color: white;
-                  padding: 12px; border-radius: 6px; text-decoration: none;
-                  margin-bottom: 10px; font-weight: bold;">
-            🔴 Войти через Яндекс
+        <a href="{% provider_login_url 'yandex' %}" class="social-btn social-yandex">
+            <span class="social-icon">🔴</span>
+            <span>Войти через Яндекс</span>
         </a>
 
-        <a href="{% provider_login_url 'github' %}"
-           style="display: block; text-align: center; background: #24292e; color: white;
-                  padding: 12px; border-radius: 6px; text-decoration: none;
-                  font-weight: bold;">
-            🐙 Войти через GitHub
+        <a href="{% provider_login_url 'github' %}" class="social-btn social-github">
+            <span class="social-icon">🐙</span>
+            <span>Войти через GitHub</span>
         </a>
     </div>
 
-    <p style="margin-top: 20px;">
+    <p style="margin-top: 24px;">
         Нет аккаунта?
-        <a href="{% url 'users:register' %}" style="color: #a78bfa;">Зарегистрироваться</a>
+        <a href="{% url 'users:register' %}">Зарегистрироваться</a>
     </p>
 {% endblock %}
