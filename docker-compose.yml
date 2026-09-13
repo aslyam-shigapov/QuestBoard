@@ -45,6 +45,12 @@ services:
       DB_HOST: db
       DB_PORT: "5432"
       REDIS_HOST: redis
+      # Email (SMTP Mail.ru)
+      EMAIL_HOST: smtp.mail.ru
+      EMAIL_PORT: "465"
+      EMAIL_USE_SSL: "True"
+      EMAIL_HOST_USER: questboard@mail.ru
+      EMAIL_HOST_PASSWORD: sW4Oj6V56Ip4nHlpNdb5
 
 volumes:
   postgres_data:
